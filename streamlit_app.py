@@ -174,7 +174,7 @@ elif mode == "🔥 اختبار القوة (Quiz)":
 
 # -- 5. الشات --
 elif mode == "💬 قناة الاتصال":
-    st.header("💬 غرفة عمليات خيري")
+    st.header("💬 غرفة عمليات الجرمي")
     for msg in st.session_state.chat:
         st.markdown(f"<div style='background:rgba(255,0,0,0.1); padding:15px; border-radius:10px; margin:10px 0;'><b>{msg['user']}</b>: {msg['msg']}</div>", unsafe_allow_html=True)
     with st.form("sov_chat", clear_on_submit=True):
