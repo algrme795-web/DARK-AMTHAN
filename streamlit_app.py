@@ -103,3 +103,20 @@ if question:
     answer = ask_ai(pdf_text, question)
     st.write("### الإجابة:")
     st.write(answer)
+    st.markdown(f"""
+<style>
+.stApp {{
+    background: url("https://i.gifer.com/7VE.gif");
+    background-size: cover;
+}}
+</style>
+""", unsafe_allow_html=True)
+    .stApp::before {
+    content: "";
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.7);
+}
