@@ -1,113 +1,77 @@
-import streamlit as st
-import os
-from PyPDF2 import PdfReader
-
-# 1. تصميم الواجهة (الألوان اللي طلبتها بالضبط)
-st.set_page_config(page_title="DARK SYSTEM AI", page_icon="💀", layout="wide")
-
-st.markdown("""
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مراجعة شبكات - معهد رسل الحضارة</title>
     <style>
-    .stApp { background-color: #000000; }
-    
-    /* الاسم المتوهج ملون */
-    .glow-name {
-        font-size: 60px; font-weight: bold; text-align: center;
-        font-family: 'Creepster', cursive;
-        animation: colorShift 3s infinite alternate;
-    }
-    @keyframes colorShift {
-        0% { color: #ff0000; text-shadow: 0 0 20px #ff0000; }
-        100% { color: #ffffff; text-shadow: 0 0 10px #ffffff; }
-    }
-
-    /* سجل البحث: أسود داكن بحدود حمراء */
-    .stTextInput > div > div > input {
-        background-color: #050505 !important;
-        color: #ff0000 !important;
-        border: 2px solid #222 !important;
-        border-radius: 10px;
-        font-size: 20px;
-    }
-    .stTextInput > div > div > input:focus {
-        border-color: #ff0000 !important;
-        box-shadow: 0 0 15px #ff0000 !important;
-    }
-
-    /* صندوق الحل المستخرج */
-    .answer-box {
-        background-color: #0a0000; border: 2px solid #ff0000;
-        padding: 20px; border-radius: 15px; color: white;
-        font-size: 18px; line-height: 1.6;
-    }
-    
-    /* زر قوقل الأحمر */
-    .google-btn {
-        display: inline-block; padding: 15px 30px;
-        background-color: #ff0000; color: white !important;
-        text-decoration: none; border-radius: 10px;
-        font-weight: bold; font-size: 20px;
-        box-shadow: 0 0 20px #ff0000;
-    }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .lesson-section { margin-bottom: 30px; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+        .lesson-title { background: #3498db; color: white; padding: 10px 15px; margin: 0; font-size: 1.2em; }
+        .question-box { padding: 15px; border-bottom: 1px inset #f1f1f1; }
+        .question { font-weight: bold; color: #e67e22; margin-bottom: 5px; }
+        .answer { background: #f9f9f9; padding: 10px; border-right: 4px solid #2ecc71; margin-top: 5px; font-size: 0.95em; }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    """, unsafe_allow_html=True)
+</head>
+<body>
 
-# 2. وظيفة البحث الذكي في ملفاتك (الشيت)
-def search_in_sheets(query):
-    hits = []
-    # يبحث في كل ملفات الـ PDF اللي رفعتها في المشروع
-    files = [f for f in os.listdir('.') if f.endswith('.pdf')]
-    for f in files:
-        try:
-            reader = PdfReader(f)
-            for i, page in enumerate(reader.pages):
-                text = page.extract_text()
-                if query.lower() in text.lower():
-                    # استخراج النص المحيط بالكلمة (الحل)
-                    pos = text.lower().find(query.lower())
-                    start = max(0, pos - 100)
-                    end = min(len(text), pos + 900)
-                    hits.append({
-                        "file": f,
-                        "page": i + 1,
-                        "content": text[start:end].replace('\n', ' ')
-                    })
-        except: continue
-    return hits
+<div class="container">
+    <h1>مراجعة مادة الشبكات (CCNA-1) - خيري عبد الواحد</h1>
 
-# 3. واجهة البرنامج
-st.markdown("<p class='glow-name'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
+    <!-- الدرس الأول والثاني -->
+    <div class="lesson-section">
+        <h2 class="lesson-title">المحاضرة 1 & 2: أساسيات ومكونات الشبكة</h2>
+        <div class="question-box">
+            <div class="question">1. ما هو تعريف شبكة الحاسب؟</div>
+            <div class="answer">هي مجموعة من أجهزة الحاسب وبعض الأجهزة الأخرى المترابطة معاً، بغرض مشاركة الموارد (Resources) مثل الطابعات والملفات.</div>
+        </div>
+        <div class="question-box">
+            <div class="question">2. اذكر مكونات الشبكة الأساسية (Components).</div>
+            <div class="answer">تتكون من: الأجهزة (Devices)، الوسائط (Media)، والخدمات (Services).</div>
+        </div>
+    </div>
 
-# سجل البحث
-user_query = st.text_input("💀 اطلب الحل (سأبحث في الشيت أو أوجهك لقوقل):")
+    <!-- الدرس الثالث -->
+    <div class="lesson-section">
+        <h2 class="lesson-title">المحاضرة 3: أنواع الشبكات وتصنيفاتها</h2>
+        <div class="question-box">
+            <div class="question">1. قارن بين شبكات الـ LAN والـ WAN من حيث المساحة.</div>
+            <div class="answer">الـ LAN تغطي مساحة جغرافية صغيرة (مثل مكتب)، بينما الـ WAN تغطي مساحة جغرافية واسعة (مثل ربط مدن أو دول).</div>
+        </div>
+        <div class="question-box">
+            <div class="question">2. ما المقصود بمصطلح Intranet؟</div>
+            <div class="answer">هي شبكة خاصة تستخدم تقنيات الإنترنت ولكنها محصورة داخل منظمة واحدة فقط ولا يمكن للعامة دخولها.</div>
+        </div>
+    </div>
 
-if user_query:
-    st.markdown("<br>", unsafe_allow_html=True)
-    results = search_in_sheets(user_query)
-    
-    if results:
-        st.markdown("<h2 style='color:red;'>✅ الحلول المتوفرة في الشيت:</h2>", unsafe_allow_html=True)
-        for res in results:
-            with st.container():
-                st.markdown(f"""
-                <div class='answer-box'>
-                    <b style='color:red;'>📄 المصدر: {res['file']} (صفحة {res['page']})</b><br><br>
-                    {res['content']}...
-                </div><br>
-                """, unsafe_allow_html=True)
-    else:
-        # إذا لم يجد حل في الشيت، يظهر زر قوقل فوراً
-        st.error("💀 لم أجد هذا السؤال في الشيت الخاص بك.")
-        st.markdown(f"""
-            <div style="text-align:center; padding:20px;">
-                <p style="font-size:20px; color:white;">اضغط الزر بالأسفل للبحث في قوقل كروم مباشرة:</p>
-                <a href="https://www.google.com/search?q={user_query}" target="_blank" class="google-btn">
-                   🔍 ابحث عن الحل في قوقل 
-                </a>
-            </div>
-        """, unsafe_allow_html=True)
+    <!-- الدرس الرابع -->
+    <div class="lesson-section">
+        <h2 class="lesson-title">المحاضرة 4: أشكال ربط الشبكات (Topology)</h2>
+        <div class="question-box">
+            <div class="question">1. ما هي مميزات الـ Star Topology؟</div>
+            <div class="answer">سهولة التوسعة، وإذا تعطل جهاز واحد أو انقطع كيبل واحد لا تتأثر باقي الشبكة.</div>
+        </div>
+        <div class="question-box">
+            <div class="question">2. أين تستخدم مقاومة الـ Terminator؟</div>
+            <div class="answer">تُستخدم في الـ Bus Topology عند نهايات الكيبل الرئيسي لمنع ارتداد الإشارة وتصادمها.</div>
+        </div>
+    </div>
 
-st.sidebar.markdown("<h3 style='color:red;'>SYSTEM STATUS</h3>", unsafe_allow_html=True)
-st.sidebar.write("✅ البحث المحلي: مفعل")
-st.sidebar.write("✅ وضع قوقل: جاهز")
-st.sidebar.write("❌ نظام API: معطل (بناءً على طلبك)")
+    <!-- الدرس الخامس والسادس -->
+    <div class="lesson-section">
+        <h2 class="lesson-title">المحاضرة 5 & 6: نموذج OSI والبروتوكولات</h2>
+        <div class="question-box">
+            <div class="question">1. اذكر طبقات نموذج OSI السبع بالترتيب.</div>
+            <div class="answer">1. Physical, 2. Data Link, 3. Network, 4. Transport, 5. Session, 6. Presentation, 7. Application.</div>
+        </div>
+        <div class="question-box">
+            <div class="question">2. في أي طبقة يعمل بروتوكول الـ IP؟</div>
+            <div class="answer">يعمل في الطبقة الثالثة (Network Layer)، وهي المسؤولة عن العنونة والتوجيه.</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
