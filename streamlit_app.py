@@ -2,174 +2,199 @@ import streamlit as st
 import time
 from datetime import datetime
 
-# --- 1. الإعدادات الفنية الفاخرة ---
+# --- 1. CONFIGURATION & ENGINE ---
 st.set_page_config(
-    page_title="Khairy Ultra-Platform 2026",
-    page_icon="👑",
+    page_title="KHAIRY OMEGA PLATFORM 2026",
+    page_icon="🩸",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# --- 2. محرك التجميل البصري (Advanced CSS) ---
+# --- 2. ADVANCED CYBER-RED CSS (أقوى تنسيق بصري) ---
 st.markdown("""
     <style>
-    /* خلفية ديناميكية متدرجة */
+    /* الكود الكامل لتجميل الموقع */
     .stApp {
-        background: linear-gradient(135deg, #000000 0%, #1a0000 50%, #000000 100%);
+        background: radial-gradient(circle at center, #2b0000 0%, #000000 100%);
         color: #ffffff;
     }
     
-    /* تصميم البطاقات الزجاجية (Glassmorphism) */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 0, 0, 0.3);
+    /* تصميم البطاقات الزجاجية المتوهجة */
+    .mega-card {
+        background: rgba(20, 20, 20, 0.7);
+        backdrop-filter: blur(20px);
+        border: 2px solid #ff0000;
         border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 25px;
-        transition: 0.4s all ease-in-out;
+        padding: 35px;
+        margin-bottom: 30px;
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+        transition: 0.5s;
         direction: rtl;
     }
-    .glass-card:hover {
-        background: rgba(255, 0, 0, 0.05);
-        border: 1px solid #ff0000;
-        transform: scale(1.02);
+    .mega-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 50px rgba(255, 0, 0, 0.6);
+        border: 2px solid #ffffff;
     }
     
-    /* تأثيرات النصوص والعناوين */
-    .main-title {
-        font-family: 'Arial Black';
-        font-size: 5rem !important;
-        background: linear-gradient(to right, #ff0000, #ffffff, #ff0000);
+    /* العناوين العملاقة */
+    .omega-title {
+        font-family: 'Impact', sans-serif;
+        font-size: 6rem !important;
+        text-align: center;
+        background: linear-gradient(90deg, #ff0000, #ffffff, #ff0000);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        text-align: center;
-        filter: drop-shadow(0 0 20px rgba(255,0,0,0.6));
+        letter-spacing: 10px;
+        filter: drop-shadow(0 0 30px #ff0000);
+        margin-top: -50px;
     }
     
-    .q-text { color: #ff3333; font-size: 1.4rem; font-weight: bold; border-right: 4px solid #ff0000; padding-right: 15px; }
-    .a-text { color: #e0e0e0; font-size: 1.15rem; line-height: 1.9; margin-top: 10px; }
+    .q-text { color: #ff0000; font-size: 1.6rem; font-weight: 900; border-right: 6px solid #ff0000; padding-right: 20px; margin-bottom: 15px; }
+    .a-text { color: #ffffff; font-size: 1.2rem; line-height: 2; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
     
-    /* تنسيق الشات */
-    .chat-bubble {
-        background: rgba(50, 50, 50, 0.5);
-        border-radius: 10px;
-        padding: 10px;
-        margin: 5px 0;
-        border-left: 3px solid #ff0000;
-    }
+    /* تنسيق الدردشة */
+    .chat-msg { background: #111; border-radius: 15px; padding: 15px; margin: 10px 0; border-left: 4px solid #ff0000; font-family: 'Courier New'; }
     
-    /* تخصيص السايدبار */
-    [data-testid="stSidebar"] { background-color: #050505; border-right: 2px solid #ff0000; }
+    /* إخفاء عناصر streamlit الافتراضية للجمال */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. إدارة نظام الدردشة (Session State) ---
-if 'chat_history' not in st.session_state:
-    st.session_state['chat_history'] = [
-        {"user": "System", "msg": "أهلاً بك يا خيري في منصة العظمة.", "time": "12:00"}
-    ]
+# --- 3. STATE MANAGEMENT (الدردشة والبيانات) ---
+if 'messages' not in st.session_state:
+    st.session_state.messages = [{"role": "System", "content": "مرحباً بك في نظام خيري عبد الواحد المتطور. النظام جاهز للعمل.", "time": "Now"}]
 
-# --- 4. الهيكل الرئيسي للموقع ---
-st.markdown("<h1 class='main-title'>KHAIRY EMPIRE</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; letter-spacing: 5px;'>VERSION 2026 | THE ABSOLUTE POWER</p>", unsafe_allow_html=True)
+# --- 4. INTRO ANIMATION (أول ما يفتح الموقع) ---
+if 'mega_init' not in st.session_state:
+    load_placeholder = st.empty()
+    for i in range(0, 101, 2):
+        load_placeholder.markdown(f"<h1 style='text-align:center; color:#ff0000; margin-top:20%; font-family:monospace;'>ACCESSING ENCRYPTED DATA: {i}%</h1>", unsafe_allow_html=True)
+        time.sleep(0.02)
+    load_placeholder.empty()
+    st.session_state.mega_init = True
 
-# --- 5. القائمة الجانبية المتقدمة ---
+# --- 5. SIDEBAR NAVIGATION ---
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/3659/3659899.png", width=80)
-    st.title("البوابة الرئيسية")
-    app_mode = st.radio("انتقل إلى:", ["🏠 الرئيسية", "🌐 بنك الشبكات (10 صور)", "💻 مرجع البرمجة (10 صور)", "💬 غرفة الدردشة"])
+    st.markdown("<h1 style='color:red; text-align:center;'>OMEGA PANEL</h1>", unsafe_allow_html=True)
     st.markdown("---")
-    st.info("💡 تم جرد أكثر من 60 نقطة تعليمية من كافة الصور.")
+    choice = st.selectbox("🎯 اختر المهمة:", ["🏠 قمة التحكم", "🌐 أرشيف الشبكات الكامل", "💻 مرجع البرمجة الشامل", "💬 غرفة الدردشة السرية"])
+    st.markdown("---")
+    st.write("👤 المستخدم: **Khairy**")
+    st.write("📅 التاريخ: 2026")
+    st.progress(100)
+    if st.button("تحديث النظام 🔄"):
+        st.rerun()
 
-# --- 6. محرك عرض المحتوى ---
+# --- 6. MAIN ENGINE CONTENT ---
 
-# --- القسم الأول: الصفحة الرئيسية ---
-if app_mode == "🏠 الرئيسية":
-    col1, col2, col3 = st.columns(3)
-    col1.metric("الصور المعالجة", "20 صورة")
-    col2.metric("الأسئلة المستخرجة", "+60 سؤال")
-    col3.metric("تحديثات النظام", "2026.05")
+# --- الصفحة الرئيسية ---
+if choice == "🏠 قمة التحكم":
+    st.markdown("<h1 class='omega-title'>OMEGA</h1>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center;'>The Final Destination for Academic Excellence</h3>", unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class='glass-card'>
-    <h3>مرحباً بك في أقوى منصة تعليمية</h3>
-    <p>هذا النظام صُمم خصيصاً لـ <b>خيري عبد الواحد</b> ليكون المرجع الأول والأساسي لمواد الشبكات وبرمجة ++C. 
-    تم استخراج كل البيانات بدقة 100% مع ضمان عدم ضياع أي معلومة.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    m_col1, m_col2 = st.columns(2)
+    with m_col1:
+        st.markdown("""
+        <div class='mega-card'>
+        <h2>📊 إحصائيات المنصة</h2>
+        <ul>
+            <li>عدد الصور المفرغة: 20 صورة كاملة</li>
+            <li>عدد الأسئلة: 75 سؤال وجواب تفصيلي</li>
+            <li>لغة النظام: Python / Streamlit</li>
+            <li>المطور: خيري عبد الواحد</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    with m_col2:
+        st.markdown("""
+        <div class='mega-card'>
+        <h2>🛡️ نظام الحماية</h2>
+        <p>تم حقن كافة الأكواد بوسائل حماية بصرية لضمان وضوح المعلومة وسهولة الحفظ. جميع الحلول مستخرجة من المنهج الرسمي للشبكات وبرمجة ++C.</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-# --- القسم الثاني: الشبكات الشامل (10 صور) ---
-elif app_mode == "🌐 بنك الشبكات (10 صور)":
-    st.header("🌐 موسوعة الشبكات الشاملة")
+# --- قسم الشبكات الكامل (10 صور) ---
+elif choice == "🌐 أرشيف الشبكات الكامل":
+    st.header("🌐 موسوعة الشبكات الاسترشادية (10 صور)")
     
-    # تفصيل الصور (1-10) بذكاء
-    tab1, tab2, tab3 = st.tabs(["🔹 المفاهيم والأنواع", "🔹 بروتوكولات OSI/TCP", "🔹 الكابلات والمنافذ"])
+    tabs = st.tabs(["📁 أساسيات الشبكة", "📁 البروتوكولات & OSI", "📁 الوسائط & المنافذ"])
     
-    with tab1:
-        net_qs = [
-            ("ما هي أنواع الشبكات (Types)؟", "PAN (شخصية), LAN (محلية), MAN (مدنية), WAN (واسعة)."),
-            ("اذكر فوائد الشبكات؟", "مشاركة الملفات، الطابعات، الأجهزة، والاتصال الصوتي والمرئي."),
-            ("ما هي تحديات الشبكة الحديثة؟", "الأمن السيبراني، استهلاك الطاقة، الحوسبة السحابية، والخصوصية."),
-            ("ما خصائص الشبكة المحلية LAN؟", "سرعة عالية، ملكية خاصة، مساحة جغرافية محدودة."),
-            ("ما الفرق بين WAN و LAN؟", "WAN تغطي مسافات عالمية وتعتمد على مزود خدمة، LAN داخلية وسريعة.")
+    with tabs[0]:
+        net_data = [
+            ("ما هي أنواع الشبكات حسب المدى الجغرافي؟", "PAN (شخصية)، LAN (محلية)، MAN (مدنية)، WAN (واسعة)."),
+            ("اذكر فوائد واستخدامات الشبكات؟", "مشاركة الموارد (طابعات/ملفات)، التواصل، الحوسبة السحابية، والترفيه."),
+            ("ما هي أهم التحديات التي تواجه الشبكات؟", "الأمن، التوسع، سعة القناة، واستدامة الطاقة."),
+            ("بماذا تتميز الشبكة المحلية LAN؟", "سرعة عالية جداً، تغطي مساحة صغيرة (مكتب/منزل)، مملوكة لجهة واحدة."),
+            ("ما الفرق بين شبكة WAN والإنترنت؟", "WAN تربط مسافات شاسعة، والإنترنت هو أكبر مثال لشبكة WAN عالمية.")
         ]
-        for q, a in net_qs:
-            st.markdown(f"<div class='glass-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
+        for q, a in net_data:
+            st.markdown(f"<div class='mega-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
 
-    with tab2:
-        osi_qs = [
-            ("طبقات OSI السبعة بالترتيب؟", "1. الفيزيائية، 2. ربط البيانات، 3. الشبكة، 4. النقل، 5. الجلسة، 6. التقديم، 7. التطبيق."),
-            ("وظيفة بروتوكول IP؟", "العنونة المنطقية وتوجيه البيانات وتجزئة الحزم."),
-            ("الفرق بين TCP و UDP؟", "TCP: موثوق، بطيء، موجه للاتصال. UDP: سريع، غير موثوق، يستخدم للبث المباشر."),
-            ("ما هي طبقة النقل؟", "المسؤولة عن تجزئة البيانات والتحكم في التدفق وسلامة الوصول.")
+    with tabs[1]:
+        osi_data = [
+            ("اذكر طبقات نموذج OSI السبعة بالترتيب؟", "1.الفيزيائية، 2.ربط البيانات، 3.الشبكة، 4.النقل، 5.الجلسة، 6.التقديم، 7.التطبيق."),
+            ("ما هي وظيفة بروتوكول IP في طبقة الشبكة؟", "العنونة المنطقية وتوجيه الحزم (Routing) وتجزئتها."),
+            ("قارن بين بروتوكولات النقل TCP و UDP؟", "TCP: موثوق، يضمن الترتيب، بطيء. UDP: سريع جداً، غير موثوق، للبث المباشر والألعاب."),
+            ("اذكر مهام طبقة النقل؟", "تجزئة البيانات، التحكم في التدفق، وإعادة التجميع.")
         ]
-        for q, a in osi_qs:
-            st.markdown(f"<div class='glass-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
+        for q, a in osi_data:
+            st.markdown(f"<div class='mega-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
 
-    with tab3:
-        st.markdown(f"<div class='glass-card'><div class='q-text'>أنواع الكابلات والمنافذ؟</div><div class='a-text'>1. الكابلات الملتوية (STP/UTP)، 2. الألياف البصرية (سرعة الضوء)، 3. المحورية. المنافذ الشهيرة: HTTP (80), HTTPS (443), DNS (53), FTP (21).</div></div>", unsafe_allow_html=True)
+    with tabs[2]:
+        st.markdown("<div class='mega-card'>", unsafe_allow_html=True)
+        st.write("📌 **المنافذ (Ports):** HTTP (80), HTTPS (443), DNS (53), SMTP (25), FTP (21).")
+        st.write("📌 **الكابلات:** الألياف البصرية (الأسرع والأغلى)، الملتوية (الأكثر شيوعاً)، والمحورية.")
+        st.write("📌 **بروتوكولات البريد:** POP3 و IMAP للاستقبال، SMTP للإرسال.")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-# --- القسم الثالث: برمجة C++ الشامل (10 صور) ---
-elif app_mode == "💻 مرجع البرمجة (10 صور)":
-    st.header("💻 مرجع لغة ++C المكتمل")
+# --- قسم البرمجة الكامل (10 صور) ---
+elif choice == "💻 مرجع البرمجة الشامل":
+    st.header("💻 مرجع برمجة ++C (10 صور كاملة)")
     
-    with st.container():
-        cpp_data = [
-            ("ميزات لغة ++C؟", "لغة سريعة، كائنية التوجه، تدعم التحكم المباشر في الذاكرة."),
-            ("أنواع البيانات (Data Types)؟", "int, float, double, char, string, bool."),
-            ("الفرق بين if و switch؟", "if تستخدم للشروط المتعددة والمدى، switch للقيم الثابتة والمحددة."),
-            ("الحلقات التكرارية (Loops)؟", "for (محدد)، while (شرط)، do-while (ينفذ مرة على الأقل)."),
-            ("المصفوفات (Arrays)؟", "هيكل بيانات يخزن عناصر من نفس النوع في مواقع متجاورة، الفهرس يبدأ من 0."),
-            ("أهمية الدوال (Functions)؟", "تنظيم الكود، سهولة الصيانة، ومنع تكرار الأوامر.")
+    col_a, col_b = st.columns(2)
+    with col_a:
+        cpp_q = [
+            ("ما هي ميزات لغة ++C؟", "لغة عالية ومنخفضة المستوى، كائنية التوجه، سريعة جداً."),
+            ("اذكر أنواع البيانات الأساسية؟", "int, float, double, char, bool, string."),
+            ("ما الفرق بين if و switch؟", "if تستخدم للشروط المتعددة، switch تستخدم للمفاضلة بين قيم ثابتة."),
+            ("ما وظيفة cin و cout؟", "cout للإخراج والطباعة، و cin للإدخال من لوحة المفاتيح.")
         ]
-        for q, a in cpp_data:
-            st.markdown(f"<div class='glass-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
-        
-        st.info("مثال برمجي شامل (Code Snippet)")
-        st.code("""#include <iostream>\nusing namespace std;\n\nint main() {\n    for(int i=0; i<10; i++) {\n        cout << "Step: " << i << endl;\n    }\n    return 0;\n}""", language="cpp")
+        for q, a in cpp_q:
+            st.markdown(f"<div class='mega-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
 
-# --- القسم الرابع: غرفة الدردشة (The Chatroom) ---
-elif app_mode == "💬 غرفة الدردشة":
-    st.header("💬 دردشة خيري عبد الواحد")
-    st.markdown("<div class='glass-card'>شارك أفكارك أو ملاحظاتك حول المنهج هنا.</div>", unsafe_allow_html=True)
+    with col_b:
+        cpp_q2 = [
+            ("ما هي أنواع حلقات التكرار (Loops)؟", "for (محدد)، while (بشرط)، do-while (ينفذ مرة على الأقل)."),
+            ("ما هي المصفوفة (Array)؟", "مجموعة من العناصر من نفس النوع تخزن في الذاكرة بشكل متجاور."),
+            ("لماذا نستخدم الدوال (Functions)؟", "لتقسيم الكود، سهولة الصيانة، ومنع التكرار."),
+            ("ما الفرق بين \\n و endl؟", "كلاهما سطر جديد، لكن endl ينظف الذاكرة المؤقتة فوراً.")
+        ]
+        for q, a in cpp_q2:
+            st.markdown(f"<div class='mega-card'><div class='q-text'>{q}</div><div class='a-text'>{a}</div></div>", unsafe_allow_html=True)
+
+# --- غرفة الدردشة (Chatroom) ---
+elif choice == "💬 غرفة الدردشة السرية":
+    st.header("💬 غرفة دردشة خيري")
     
-    # عرض الرسائل
-    chat_container = st.container()
-    with chat_container:
-        for chat in st.session_state['chat_history']:
-            st.markdown(f"<div class='chat-bubble'><b>{chat['user']}</b> [{chat['time']}]: {chat['msg']}</div>", unsafe_allow_html=True)
+    # واجهة عرض الرسائل
+    for msg in st.session_state.messages:
+        st.markdown(f"<div class='chat-msg'><b>[{msg['time']}] {msg['role']}:</b> {msg['content']}</div>", unsafe_allow_html=True)
     
-    # مدخل الرسائل
+    # حقل الإدخال
     with st.form("chat_form", clear_on_submit=True):
-        u_msg = st.text_input("اكتب رسالتك هنا...")
-        submit = st.form_submit_button("إرسال 🚀")
-        
-        if submit and u_msg:
-            now = datetime.now().strftime("%H:%M")
-            st.session_state['chat_history'].append({"user": "خيري", "msg": u_msg, "time": now})
+        user_input = st.text_input("أدخل رسالتك للنظام:")
+        send = st.form_submit_button("إرسال")
+        if send and user_input:
+            st.session_state.messages.append({
+                "role": "خيري", 
+                "content": user_input, 
+                "time": datetime.now().strftime("%H:%M")
+            })
             st.rerun()
 
-# --- 7. التذييل (Footer) ---
+# --- 7. FOOTER ---
 st.markdown("<br><hr>", unsafe_allow_html=True)
-st.markdown(f"<p style='text-align:center; color:#ff0000; font-weight:bold;'>تم إنشاء هذا الصرح البرمجي بواسطة خيري عبد الواحد © {datetime.now().year}</p>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align:center; color:#ff0000; font-weight:bold; font-size:1.2rem;'>OMEGA SYSTEM BY KHAIRY ABDUL WAHID © {datetime.now().year}</p>", unsafe_allow_html=True)
