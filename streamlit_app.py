@@ -1,10 +1,11 @@
 import streamlit as st
 import os
+from PyPDF2 import PdfReader
 import requests
 import time
 
-# 1. إعدادات الصفحة والجمالية (الدم والرعب)
-st.set_page_config(page_title="DARK AMTHAN - EVIL EDITION", page_icon="💀", layout="wide")
+# 1. إعدادات الصفحة والجمالية (تأثير الاسم الملون)
+st.set_page_config(page_title="DARK SYSTEM AI", page_icon="💀", layout="wide")
 
 st.markdown("""
     <style>
@@ -14,86 +15,106 @@ st.markdown("""
         background-size: cover;
         background-attachment: fixed;
     }
-    .dripping-blood {
-        color: #FF0000; font-size: 70px; font-weight: bold; text-align: center;
-        font-family: 'Creepster', cursive; text-shadow: 0 10px 20px #7b0000;
-        animation: drip 2s infinite;
+    
+    /* اسم يتغير لونه (Neon Animation) */
+    .changing-color-name {
+        font-size: 70px; font-weight: bold; text-align: center;
+        font-family: 'Creepster', cursive;
+        animation: color-change 3s infinite;
     }
-    @keyframes drip { 0% { text-shadow: 0 5px #7b0000; } 50% { text-shadow: 0 25px #7b0000; } 100% { text-shadow: 0 5px #7b0000; } }
-    .welcome-text { color: #FF0000; text-align: center; font-size: 30px; font-family: 'Courier New'; font-weight: bold; }
-    .stButton>button { 
-        background-color: #7b0000; color: white; border: 2px solid #FF0000; 
-        width: 100%; font-size: 25px; height: 60px; border-radius: 15px;
+    @keyframes color-change {
+        0% { color: #FF0000; text-shadow: 0 0 20px #FF0000; }
+        33% { color: #7b0000; text-shadow: 0 0 20px #7b0000; }
+        66% { color: #ffffff; text-shadow: 0 0 20px #ffffff; }
+        100% { color: #FF0000; text-shadow: 0 0 20px #FF0000; }
     }
-    .answer-box { background-color: rgba(15, 0, 0, 0.95); border: 2px solid #FF0000; padding: 25px; border-radius: 20px; color: #fff; box-shadow: 0 0 30px #FF0000; }
+
+    /* الزر الدائري الكبير */
+    .stButton>button {
+        border-radius: 50%; width: 200px; height: 200px;
+        background-color: #000; border: 5px solid #FF0000;
+        color: #FF0000; font-size: 30px; font-weight: bold;
+        box-shadow: 0 0 50px #FF0000; transition: 0.3s;
+        margin: 0 auto; display: block;
+    }
+    .stButton>button:hover { transform: scale(1.1); background-color: #FF0000; color: #000; }
+
+    .answer-box { background-color: rgba(10, 0, 0, 0.9); border: 2px solid #FF0000; padding: 25px; border-radius: 15px; color: white; }
+    .stProgress > div > div > div > div { background-color: #FF0000; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-# 2. نظام الصوت والرعد (JavaScript)
-def play_horror_sound():
-    sound_html = """
-    <audio id="thunder" autoplay>
-        <source src="https://www.soundjay.com/nature/sounds/thunder-rain-1.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="laugh" autoplay>
-        <source src="https://www.soundbox.com/storage/samples/evil-laugh.mp3" type="audio/mpeg">
-    </audio>
-    <script>
-        document.getElementById('thunder').volume = 0.5;
-        document.getElementById('laugh').volume = 1.0;
-        document.getElementById('thunder').play();
-        setTimeout(function(){ document.getElementById('laugh').play(); }, 2000);
-    </script>
+# 2. وظيفة الصوت (رعد وضحكة)
+def play_horror():
+    sound_js = """
+    <audio id="thunder" autoplay><source src="https://www.soundjay.com/nature/sounds/thunder-rain-1.mp3"></audio>
+    <audio id="laugh" autoplay><source src="https://www.soundbox.com/storage/samples/evil-laugh.mp3"></audio>
     """
-    st.components.v1.html(sound_html, height=0)
+    st.components.v1.html(sound_js, height=0)
 
-# 3. شريط التحميل والترحيب
-if 'activated' not in st.session_state:
-    st.markdown("<p class='dripping-blood'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
-    if st.button("💀 تفعيل نظام DARK (اضغط لسماع الرعد) 💀"):
-        play_horror_sound()
-        p_bar = st.progress(0)
-        for i in range(100):
-            time.sleep(0.01)
-            p_bar.progress(i + 1)
-        st.markdown("<p class='welcome-text'>Welcome to DARK... Searching the Web for Blood</p>", unsafe_allow_html=True)
-        time.sleep(1)
-        st.session_state['activated'] = True
-        st.rerun()
+# 3. شريط التحميل والزر الدائري
+if 'access' not in st.session_state:
+    p_bar = st.progress(0)
+    for i in range(100):
+        time.sleep(0.01)
+        p_bar.progress(i + 1)
+    
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align:center; color:red;'>SYSTEM LOCKED</h1>", unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("💀 ENTER"):
+            play_horror()
+            st.session_state['access'] = True
+            st.rerun()
     st.stop()
 
-st.markdown("<p class='dripping-blood'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
+st.markdown("<p class='changing-color-name'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
 
-# 4. وظيفة البحث في قوقل عبر Gemini (طريقة الـ Requests المستقرة)
-def ask_gemini_web(question):
+# 4. محرك البحث الهجين (PDF + Google)
+def search_hybrid(query):
+    # أولاً: جلب نصوص من الـ PDF
+    pdf_text = ""
+    files = [f for f in os.listdir('.') if f.endswith('.pdf')]
+    for f in files:
+        try:
+            reader = PdfReader(f)
+            for page in reader.pages[:10]: pdf_text += page.extract_text()
+        except: continue
+    
     api_key = "AIzaSyDR_8vJRqiFmXwsscAq1WV88d8MBJbfUsk"
-    # استخدام موديل يدعم البحث (Google Search Tools)
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
     
+    # الطلب الذكي: ابحث في النص المرفق، وإذا لم تجد، استخدم بحث قوقل
+    prompt = f"""
+    لديك النص التالي من المنهج التعليمي: {pdf_text[:4000]}
+    السؤال هو: {query}
+    تعليمات: 
+    1. ابحث عن الإجابة في النص المرفق أولاً.
+    2. إذا لم تجد الإجابة في النص، استخدم أداة بحث قوقل المدمجة لديك وأعطني إجابة مضمونة من الإنترنت.
+    3. ابدأ إجابتك بذكر مصدر المعلومة (من المنهج أو من الإنترنت).
+    """
+    
     data = {
-        "contents": [{"parts": [{"text": f"ابحث في الإنترنت وأعطني إجابة مضمونة وتفصيلية للسؤال التالي: {question}"}]}],
-        "tools": [{"google_search_retrieval": {}}] # هذه الإضافة هي التي تجعله يبحث في قوقل
+        "contents": [{"parts": [{"text": prompt}]}],
+        "tools": [{"google_search_retrieval": {}}]
     }
     
     try:
         response = requests.post(url, json=data)
         return response.json()['candidates'][0]['content']['parts'][0]['text']
     except:
-        return "💀 النظام غير قادر على الوصول لقوقل حالياً، حاول مرة أخرى."
+        return "💀 حدث خطأ في الاتصال بالنظام المظلم."
 
-# 5. واجهة المستخدم
-query = st.text_input("💀 اطلب أي معلومة من قوقل (سيتم نبش الإنترنت لإحضارها):")
+# 5. واجهة البحث
+user_query = st.text_input("💀 اطلب العلم من المنهج أو من قوقل:")
 
-if query:
-    with st.spinner("⏳ جاري استدعاء الرعد والبحث في قوقل..."):
-        # تشغيل صوت رعد خفيف عند البحث أيضاً
-        st.components.v1.html('<audio autoplay><source src="https://www.soundjay.com/nature/sounds/lightning-strike-1.mp3" type="audio/mpeg"></audio>', height=0)
-        
-        answer = ask_gemini_web(query)
-        
-        st.markdown("<h2 style='color: #FF0000; text-align: center;'>✅ النتيجة المضمونة من الشبكة السوداء:</h2>", unsafe_allow_html=True)
-        st.markdown(f"<div class='answer-box'>{answer}</div>", unsafe_allow_html=True)
+if user_query:
+    with st.spinner("⏳ جاري نبش الملفات والإنترنت..."):
+        result = search_hybrid(user_query)
+        st.markdown("<h2 style='color: #FF0000;'>✅ الحل النهائي:</h2>", unsafe_allow_html=True)
+        st.markdown(f"<div class='answer-box'>{result}</div>", unsafe_allow_html=True)
 
 st.sidebar.image("https://i.pinimg.com/originals/4d/9d/21/4d9d21469e71b268f76332766860000e.gif")
-st.sidebar.markdown("<h1 style='color: red;'>DARK SYSTEM v6.6.6</h1>", unsafe_allow_html=True)
