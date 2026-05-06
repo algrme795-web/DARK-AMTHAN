@@ -1,17 +1,15 @@
 import streamlit as st
 import os
 from PyPDF2 import PdfReader
-import requests
-import time
 
-# 1. تنسيق الواجهة (أسود داكن + سجل أحمر + اسم ملون)
-st.set_page_config(page_title="DARK AMTHAN AI", page_icon="💀", layout="wide")
+# 1. تصميم الواجهة (الألوان اللي طلبتها بالضبط)
+st.set_page_config(page_title="DARK SYSTEM AI", page_icon="💀", layout="wide")
 
 st.markdown("""
     <style>
     .stApp { background-color: #000000; }
     
-    /* الاسم الملون المتوهج */
+    /* الاسم المتوهج ملون */
     .glow-name {
         font-size: 60px; font-weight: bold; text-align: center;
         font-family: 'Creepster', cursive;
@@ -19,11 +17,10 @@ st.markdown("""
     }
     @keyframes colorShift {
         0% { color: #ff0000; text-shadow: 0 0 20px #ff0000; }
-        50% { color: #ffffff; text-shadow: 0 0 30px #7b0000; }
-        100% { color: #8b0000; text-shadow: 0 0 10px #ff0000; }
+        100% { color: #ffffff; text-shadow: 0 0 10px #ffffff; }
     }
 
-    /* سجل البحث: أسود داكن بحدود حمراء متوهجة */
+    /* سجل البحث: أسود داكن بحدود حمراء */
     .stTextInput > div > div > input {
         background-color: #050505 !important;
         color: #ff0000 !important;
@@ -33,73 +30,84 @@ st.markdown("""
     }
     .stTextInput > div > div > input:focus {
         border-color: #ff0000 !important;
-        box-shadow: 0 0 20px #ff0000 !important;
+        box-shadow: 0 0 15px #ff0000 !important;
     }
 
-    /* صندوق الحل */
+    /* صندوق الحل المستخرج */
     .answer-box {
-        background-color: #0a0000;
-        border: 2px solid #ff0000;
-        padding: 20px;
-        border-radius: 15px;
-        color: white;
-        font-size: 18px;
-        line-height: 1.6;
-        box-shadow: inset 0 0 15px #ff0000;
+        background-color: #0a0000; border: 2px solid #ff0000;
+        padding: 20px; border-radius: 15px; color: white;
+        font-size: 18px; line-height: 1.6;
+    }
+    
+    /* زر قوقل الأحمر */
+    .google-btn {
+        display: inline-block; padding: 15px 30px;
+        background-color: #ff0000; color: white !important;
+        text-decoration: none; border-radius: 10px;
+        font-weight: bold; font-size: 20px;
+        box-shadow: 0 0 20px #ff0000;
     }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-# 2. وظيفة قراءة الشيت (PDF)
-def get_pdf_content():
-    text = ""
+# 2. وظيفة البحث الذكي في ملفاتك (الشيت)
+def search_in_sheets(query):
+    hits = []
+    # يبحث في كل ملفات الـ PDF اللي رفعتها في المشروع
     files = [f for f in os.listdir('.') if f.endswith('.pdf')]
     for f in files:
         try:
             reader = PdfReader(f)
-            for page in reader.pages[:15]: # يقرأ أول 15 صفحة لضمان السرعة
-                text += page.extract_text()
+            for i, page in enumerate(reader.pages):
+                text = page.extract_text()
+                if query.lower() in text.lower():
+                    # استخراج النص المحيط بالكلمة (الحل)
+                    pos = text.lower().find(query.lower())
+                    start = max(0, pos - 100)
+                    end = min(len(text), pos + 900)
+                    hits.append({
+                        "file": f,
+                        "page": i + 1,
+                        "content": text[start:end].replace('\n', ' ')
+                    })
         except: continue
-    return text
+    return hits
 
-# 3. وظيفة الحصول على الحل (AI + Search)
-def get_ai_solution(user_query):
-    sheet_content = get_pdf_content()
-    api_key = "AIzaSyDR_8vJRqiFmXwsscAq1WV88d8MBJbfUsk"
-    url = f"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={api_key}"
-    
-    # هنا السر: نطلب منه يحل من الشيت، وإذا ما لقاش يحل من قوقل
-    prompt = f"""
-    أنت مساعد ذكي لمعهد رسل الحضارة.
-    استخدم هذا النص من الشيت للإجابة: {sheet_content[:4000]}
-    السؤال: {user_query}
-    إذا لم تجد الإجابة في الشيت، ابحث في قوقل وأعطني حلاً كاملاً ومضموناً.
-    """
-    
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "tools": [{"google_search_retrieval": {}}]
-    }
-
-    for _ in range(3): # محاولات تكرار لضمان 0% خطأ
-        try:
-            res = requests.post(url, json=payload, timeout=15)
-            if res.status_code == 200:
-                return res.json()['candidates'][0]['content']['parts'][0]['text']
-        except:
-            time.sleep(1)
-    return "💀 النظام المظلم تعثر.. حاول مرة أخرى."
-
-# 4. واجهة المستخدم
+# 3. واجهة البرنامج
 st.markdown("<p class='glow-name'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
 
-query = st.text_input("💀 اطلب الحل (سأبحث في الشيت وقوقل):")
+# سجل البحث
+user_query = st.text_input("💀 اطلب الحل (سأبحث في الشيت أو أوجهك لقوقل):")
 
-if query:
-    with st.spinner("⏳ جاري استخراج الحل من الأعماق..."):
-        solution = get_ai_solution(query)
-        st.markdown("<h2 style='color:red;'>✅ الحل النهائي المضمون:</h2>", unsafe_allow_html=True)
-        st.markdown(f"<div class='answer-box'>{solution}</div>", unsafe_allow_html=True)
+if user_query:
+    st.markdown("<br>", unsafe_allow_html=True)
+    results = search_in_sheets(user_query)
+    
+    if results:
+        st.markdown("<h2 style='color:red;'>✅ الحلول المتوفرة في الشيت:</h2>", unsafe_allow_html=True)
+        for res in results:
+            with st.container():
+                st.markdown(f"""
+                <div class='answer-box'>
+                    <b style='color:red;'>📄 المصدر: {res['file']} (صفحة {res['page']})</b><br><br>
+                    {res['content']}...
+                </div><br>
+                """, unsafe_allow_html=True)
+    else:
+        # إذا لم يجد حل في الشيت، يظهر زر قوقل فوراً
+        st.error("💀 لم أجد هذا السؤال في الشيت الخاص بك.")
+        st.markdown(f"""
+            <div style="text-align:center; padding:20px;">
+                <p style="font-size:20px; color:white;">اضغط الزر بالأسفل للبحث في قوقل كروم مباشرة:</p>
+                <a href="https://www.google.com/search?q={user_query}" target="_blank" class="google-btn">
+                   🔍 ابحث عن الحل في قوقل 
+                </a>
+            </div>
+        """, unsafe_allow_html=True)
 
-st.sidebar.image("https://i.pinimg.com/originals/4d/9d/21/4d9d21469e71b268f76332766860000e.gif")
+st.sidebar.markdown("<h3 style='color:red;'>SYSTEM STATUS</h3>", unsafe_allow_html=True)
+st.sidebar.write("✅ البحث المحلي: مفعل")
+st.sidebar.write("✅ وضع قوقل: جاهز")
+st.sidebar.write("❌ نظام API: معطل (بناءً على طلبك)")
