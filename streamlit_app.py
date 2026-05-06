@@ -1,14 +1,10 @@
 import streamlit as st
 import os
 from PyPDF2 import PdfReader
-import google.generativeai as genai
+import requests
 import time
 
-# 1. إعداد الذكاء الاصطناعي
-genai.configure(api_key="AIzaSyDR_8vJRqiFmXwsscAq1WV88d8MBJbfUsk")
-model = genai.GenerativeModel('gemini-pro')
-
-# 2. تصميم الواجهة والخلفية
+# 1. إعدادات المظهر والرسائل (كما طلبت تماماً)
 st.set_page_config(page_title="DARK AMTHAN AI", page_icon="💀", layout="wide")
 
 st.markdown("""
@@ -20,12 +16,8 @@ st.markdown("""
         background-attachment: fixed;
     }
     .dripping-blood {
-        color: #FF0000;
-        font-size: 65px;
-        font-weight: bold;
-        text-align: center;
-        font-family: 'Creepster', cursive;
-        text-shadow: 0 0 15px #7b0000;
+        color: #FF0000; font-size: 65px; font-weight: bold; text-align: center;
+        font-family: 'Creepster', cursive; text-shadow: 0 0 15px #7b0000;
         animation: blood-drip 2s infinite;
     }
     @keyframes blood-drip { 0%, 100% { text-shadow: 0 0 10px #7b0000; } 50% { text-shadow: 0 15px #7b0000; } }
@@ -36,7 +28,7 @@ st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
     """, unsafe_allow_html=True)
 
-# 3. شريط التحميل والترحيب
+# 2. شريط التحميل والترحيب
 if 'loaded' not in st.session_state:
     p_bar = st.progress(0)
     for i in range(100):
@@ -49,7 +41,7 @@ if 'loaded' not in st.session_state:
 
 st.markdown("<p class='dripping-blood'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
 
-# 4. وظيفة جلب المنهج
+# 3. وظيفة جلب المنهج من ملفات PDF
 def get_curriculum():
     text = ""
     files = [f for f in os.listdir('.') if f.endswith('.pdf')]
@@ -60,22 +52,30 @@ def get_curriculum():
         except: continue
     return text
 
-# 5. البحث والحل النهائي
+# 4. وظيفة الاتصال بـ Gemini عبر Requests (بدون Traceback)
+def ask_gemini(prompt):
+    api_key = "AIzaSyDR_8vJRqiFmXwsscAq1WV88d8MBJbfUsk"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    headers = {'Content-Type': 'application/json'}
+    data = {"contents": [{"parts": [{"text": prompt}]}]}
+    
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        return response.json()['candidates'][0]['content']['parts'][0]['text']
+    except Exception as e:
+        return "💀 عذراً، لم أستطع الوصول للحل حالياً. تأكد من اتصالك."
+
+# 5. واجهة البحث
 query = st.text_input("💀 اكتب سؤالك هنا للحصول على الحل الصافي:")
 
 if query:
-    with st.spinner("⏳ جاري استخراج الحل من المنهج..."):
+    with st.spinner("⏳ جاري نبش المنهج عن الحل..."):
         context = get_curriculum()
-        try:
-            # دمج المنهج مع السؤال لضمان دقة الحل
-            full_prompt = f"أنت خبير تعليمي. بناءً على هذا المنهج: {context[:5000]}. أجب بوضوح على: {query}"
-            response = model.generate_content(full_prompt)
-            st.markdown("<h2 style='color: #FF0000;'>✅ الحل النهائي:</h2>", unsafe_allow_html=True)
-            st.markdown(f"<div class='answer-box'>{response.text}</div>", unsafe_allow_html=True)
-        except:
-            # حل بديل مباشر في حال فشل السياق
-            response = model.generate_content(query)
-            st.markdown(f"<div class='answer-box'>{response.text}</div>", unsafe_allow_html=True)
+        full_prompt = f"منهج الدراسة: {context[:4000]}. أجب بوضوح على: {query}"
+        
+        solution = ask_gemini(full_prompt)
+        
+        st.markdown("<h2 style='color: #FF0000;'>✅ الحل النهائي:</h2>", unsafe_allow_html=True)
+        st.markdown(f"<div class='answer-box'>{solution}</div>", unsafe_allow_html=True)
 
 st.sidebar.image("https://i.pinimg.com/originals/4d/9d/21/4d9d21469e71b268f76332766860000e.gif")
-st.sidebar.markdown("<h1 style='color: red;'>DARK SYSTEM</h1>", unsafe_allow_html=True)
