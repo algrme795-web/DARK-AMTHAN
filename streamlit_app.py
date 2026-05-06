@@ -1,69 +1,83 @@
 import streamlit as st
 
 # إعدادات الصفحة
-st.set_page_config(page_title="مراجعة معهد رسل الحضارة", layout="wide")
+st.set_page_config(page_title="منصة مراجعة معهد رسل الحضارة", layout="wide")
 
-# إضافة تنسيق CSS لتحسين المظهر
+# تنسيق المظهر (CSS) ليكون مريحاً للطالب
 st.markdown("""
     <style>
-    .main { background-color: #f4f7f6; }
-    .stButton>button { width: 100%; border-radius: 5px; height: 3em; background-color: #3498db; color: white; }
-    .question-box { background: white; padding: 20px; border-radius: 10px; border-right: 5px solid #3498db; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .answer-text { color: #2ecc71; font-weight: bold; }
+    .main { background-color: #f8f9fa; }
+    .stExpander { background-color: white; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .question { color: #2c3e50; font-weight: bold; font-size: 1.1em; border-right: 4px solid #3498db; padding-right: 10px; margin-bottom: 10px; }
+    .answer { color: #27ae60; background-color: #f0fff4; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-weight: 500; }
     div.stMarkdown { text-align: right; }
     </style>
     """, unsafe_allow_html=True)
 
-st.title("📚 منصة مراجعة خيري عبد الواحد")
-st.subheader("معهد رسل الحضارة الدولي")
+st.title("🎓 بنك الأسئلة المحلولة - معهد رسل الحضارة")
+st.write("إعداد الطالب: خيري عبد الواحد")
 
-# نظام القائمة الجانبية للاختيار
+# القائمة الجانبية للتنقل
 with st.sidebar:
-    st.header("قائمة المواد")
-    choice = st.radio("اختر المادة للمراجعة:", ["شبكات الحاسوب (Network)", "لغة البرمجة (++C)"])
-    st.info("تم إعداد هذه الأسئلة بناءً على المنهج الدراسي المعتمد.")
+    st.header("إدارة المواد")
+    choice = st.radio("اختر القسم:", ["شبكات الحاسوب (Network)", "لغة البرمجة (++C)"])
+    st.success("جميع الأسئلة مستخرجة من المنهج الرسمي.")
 
 if choice == "شبكات الحاسوب (Network)":
-    st.header("🌐 مراجعة مادة الشبكات (CCNA-1)")
-    
-    # قسم المحاضرة 1 & 2
-    with st.expander("المحاضرة 1 & 2: أساسيات ومكونات الشبكة", expanded=True):
-        st.markdown('<div class="question-box"><b>س: ما هو تعريف شبكة الحاسب؟</b><br><span class="answer-text">ج: هي مجموعة من أجهزة الحاسب وبعض الأجهزة الأخرى المترابطة معاً، بغرض مشاركة الموارد.</span></div>', unsafe_allow_html=True)
-        st.markdown('<div class="question-box"><b>س: اذكر مكونات الشبكة الأساسية.</b><br><span class="answer-text">ج: الأجهزة (Devices)، الوسائط (Media)، والخدمات (Services).</span></div>', unsafe_allow_html=True)
+    st.header("🌐 مراجعة شاملة لمادة الشبكات (CCNA-1)")
 
-    # قسم المحاضرة 3
-    with st.expander("المحاضرة 3: أنواع الشبكات"):
-        st.markdown('<div class="question-box"><b>س: قارن بين LAN و WAN؟</b><br><span class="answer-text">ج: LAN للمساحات الصغيرة (مكتب)، و WAN للمساحات الواسعة (مدن).</span></div>', unsafe_allow_html=True)
+    # القسم الأول: المحاضرات 1، 2، 3
+    with st.expander("📖 المحاضرة 1 إلى 3: التعريفات والأنواع", expanded=True):
+        st.markdown('<div class="question">س1: ما هي شبكة الحاسب؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: مجموعة من الأجهزة المرتبطة ببعضها لمشاركة الموارد (بيانات، طابعات، برمجيات).</div>', unsafe_allow_html=True)
+        
+        st.markdown('<div class="question">س2: ما الفرق بين الـ LAN والـ WAN والـ MAN؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: LAN (محلية لمبنى)، MAN (متوسطة لمدينة)، WAN (واسعة لدول وقارات).</div>', unsafe_allow_html=True)
 
-    # قسم المحاضرة 4
-    with st.expander("المحاضرة 4: أشكال الربط (Topology)"):
-        st.markdown('<div class="question-box"><b>س: ما فائدة الـ Terminator في شبكة Bus؟</b><br><span class="answer-text">ج: يمنع ارتداد الإشارات عند نهايات الكيبل.</span></div>', unsafe_allow_html=True)
+        st.markdown('<div class="question">س3: اذكر مكونات الشبكة (Components).</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: الأجهزة (Devices)، الوسائط (Media)، الخدمات (Services).</div>', unsafe_allow_html=True)
+
+    # القسم الثاني: المحاضرة 4
+    with st.expander("📐 المحاضرة 4: أشكال ربط الشبكات (Topology)"):
+        st.markdown('<div class="question">س4: ما هو الـ Star Topology؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: ربط كل الأجهزة بنقطة مركزية (Hub/Switch)[cite: 1].</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="question">س5: ما هي ميزة الـ Mesh Topology؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: الموثوقية العالية (Redundancy)؛ حيث يتصل كل جهاز بكل الأجهزة الأخرى مباشرة[cite: 1].</div>', unsafe_allow_html=True)
+
+    # القسم الثالث: المحاضرة 5 و 6
+    with st.expander("⚙️ المحاضرة 5 & 6: نموذج OSI والبروتوكولات"):
+        st.markdown('<div class="question">س6: اذكر طبقات الـ OSI السبعة بالترتيب من الأسفل.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: 1-Physical, 2-Data Link, 3-Network, 4-Transport, 5-Session, 6-Presentation, 7-Application[cite: 1].</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="question">س7: ما هي وظيفة طبقة الـ Network؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: العنونة المنطقية (IP Addressing) واختيار أفضل مسار (Routing)[cite: 1].</div>', unsafe_allow_html=True)
+
+    # القسم الرابع: المحاضرة 7
+    with st.expander("🔌 المحاضرة 7: وسائط النقل والكيبلات"):
+        st.markdown('<div class="question">س8: ما الفرق بين كيبل Straight-through و Cross-over؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: Straight لربط أجهزة مختلفة (PC إلى Switch)، و Cross لربط أجهزة متشابهة (PC إلى PC)[cite: 1].</div>', unsafe_allow_html=True)
 
 else:
-    st.header("💻 مراجعة لغة البرمجة (++C)")
-    
-    with st.expander("الأساسيات والعمليات", expanded=True):
-        st.code("""
-#include <iostream>
-using namespace std;
+    st.header("💻 مراجعة شاملة لأسئلة لغة ++C")
 
-int main() {
-    // كود طباعة ترحيب
-    cout << "Welcome to C++";
-    return 0;
+    with st.expander("基础 الأساسيات والمدخلات", expanded=True):
+        st.markdown('<div class="question">س1: كيف يتم تعريف متغير لتخزين نص (كلمة)؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: باستخدام نوع البيانات string (مثال: string name;).</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="question">س2: ما هو الفرق بين "=" و "==" في البرمجة؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: "=" تستخدم لإعطاء قيمة للمتغير، بينما "==" تستخدم للمقارنة بين قيمتين.</div>', unsafe_allow_html=True)
+
+    with st.expander("🔄 الحلقات التكرارية (Loops) والشروط"):
+        st.markdown('<div class="question">س3: متى نستخدم الحلقة (for loop)؟</div>', unsafe_allow_html=True)
+        st.markdown('<div class="answer">ج: عندما نعرف عدد التكرارات مسبقاً.</div>', unsafe_allow_html=True)
+
+        st.code("""
+// مثال لكود يطبع الأرقام من 1 إلى 5
+for(int i=1; i<=5; i++) {
+    cout << i << endl;
 }
         """, language="cpp")
-        st.markdown('<div class="question-box"><b>س: ما وظيفة #include <iostream>؟</b><br><span class="answer-text">ج: استدعاء مكتبة الإدخال والإخراج الأساسية في اللغة.</span></div>', unsafe_allow_html=True)
-
-    with st.expander("الشروط والدوال"):
-        st.code("""
-if (grade >= 50) {
-    cout << "Pass";
-} else {
-    cout << "Fail";
-}
-        """, language="cpp")
-        st.markdown('<div class="question-box"><b>س: كيف نعرّف متغير رقمي صحيح؟</b><br><span class="answer-text">ج: باستخدام الكلمة المحجوزة int (مثال: int x;).</span></div>', unsafe_allow_html=True)
 
 st.sidebar.markdown("---")
-st.sidebar.write("تم التطوير بواسطة خيري عبد الواحد")
+st.sidebar.info("هذا الموقع يخدم طلاب معهد رسل الحضارة الدولي.")
