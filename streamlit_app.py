@@ -1,122 +1,81 @@
 import streamlit as st
-import PyPDF2
-import requests
 import os
+from PyPDF2 import PdfReader
+import requests
 import time
 
-# ------------------ إعداد الصفحة ------------------
-st.set_page_config(page_title="DARK AMTHAN AI", layout="wide")
+# 1. إعدادات المظهر والرسائل (كما طلبت تماماً)
+st.set_page_config(page_title="DARK AMTHAN AI", page_icon="💀", layout="wide")
 
-# ------------------ CSS مرعب ------------------
 st.markdown("""
-<style>
-body {
-    background-color: black;
-    color: red;
-}
+    <style>
+    .stApp {
+        background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                    url('https://i.pinimg.com/originals/07/20/38/0720387ca0872223403300609395f190.gif');
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    .dripping-blood {
+        color: #FF0000; font-size: 65px; font-weight: bold; text-align: center;
+        font-family: 'Creepster', cursive; text-shadow: 0 0 15px #7b0000;
+        animation: blood-drip 2s infinite;
+    }
+    @keyframes blood-drip { 0%, 100% { text-shadow: 0 0 10px #7b0000; } 50% { text-shadow: 0 15px #7b0000; } }
+    .welcome-msg { color: #FF0000; text-align: center; font-size: 28px; font-family: 'Courier New'; font-weight: bold; }
+    .answer-box { background-color: rgba(20, 0, 0, 0.95); border: 3px solid #FF0000; padding: 20px; border-radius: 15px; color: white; box-shadow: 0 0 20px #FF0000; }
+    .stProgress > div > div > div > div { background-color: #FF0000; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    """, unsafe_allow_html=True)
 
-.main-title {
-    font-size: 50px;
-    color: red;
-    text-shadow: 0 0 10px darkred;
-    animation: flicker 1.5s infinite;
-}
+# 2. شريط التحميل والترحيب
+if 'loaded' not in st.session_state:
+    p_bar = st.progress(0)
+    for i in range(100):
+        time.sleep(0.01)
+        p_bar.progress(i + 1)
+    st.markdown("<p class='welcome-msg'>Welcome to DARK...</p>", unsafe_allow_html=True)
+    time.sleep(1)
+    p_bar.empty()
+    st.session_state['loaded'] = True
 
-@keyframes flicker {
-  0% {opacity: 1;}
-  50% {opacity: 0.7;}
-  100% {opacity: 1;}
-}
+st.markdown("<p class='dripping-blood'>DARK AMTHAN AI</p>", unsafe_allow_html=True)
 
-.typing {
-    font-size: 25px;
-    border-right: 2px solid red;
-    white-space: nowrap;
-    overflow: hidden;
-    animation: typing 3s steps(30), blink .5s step-end infinite alternate;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
-}
-
-@keyframes blink {
-  50% { border-color: transparent }
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ------------------ عنوان ------------------
-st.markdown('<div class="main-title">DARK AMTHAN AI</div>', unsafe_allow_html=True)
-
-# ------------------ تأثير الكتابة ------------------
-st.markdown('<div class="typing">Welcome to DARK...</div>', unsafe_allow_html=True)
-
-# ------------------ Progress Bar ------------------
-progress = st.progress(0)
-for i in range(100):
-    time.sleep(0.01)
-    progress.progress(i + 1)
-
-# ------------------ قراءة PDF ------------------
-def read_pdfs(folder="data"):
+# 3. وظيفة جلب المنهج من ملفات PDF
+def get_curriculum():
     text = ""
-    for file in os.listdir(folder):
-        if file.endswith(".pdf"):
-            with open(os.path.join(folder, file), "rb") as f:
-                reader = PyPDF2.PdfReader(f)
-                for page in reader.pages:
-                    text += page.extract_text() + "\n"
+    files = [f for f in os.listdir('.') if f.endswith('.pdf')]
+    for f in files:
+        try:
+            reader = PdfReader(f)
+            for page in reader.pages[:10]: text += page.extract_text()
+        except: continue
     return text
 
-pdf_text = read_pdfs()
-
-# ------------------ إدخال المستخدم ------------------
-question = st.text_input("اكتب سؤالك من المنهج...")
-
-# ------------------ Gemini API باستخدام requests ------------------
-def ask_ai(context, question):
-    url = "https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=YOUR_API_KEY"
-
-    headers = {
-        "Content-Type": "application/json"
-    }
-
-    data = {
-        "contents": [{
-            "parts": [{
-                "text": f"اعتمد فقط على هذا النص:\n{context}\n\nالسؤال: {question}"
-            }]
-        }]
-    }
-
-    response = requests.post(url, headers=headers, json=data)
-
-    if response.status_code == 200:
+# 4. وظيفة الاتصال بـ Gemini عبر Requests (بدون Traceback)
+def ask_gemini(prompt):
+    api_key = "AIzaSyDR_8vJRqiFmXwsscAq1WV88d8MBJbfUsk"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    headers = {'Content-Type': 'application/json'}
+    data = {"contents": [{"parts": [{"text": prompt}]}]}
+    
+    try:
+        response = requests.post(url, headers=headers, json=data)
         return response.json()['candidates'][0]['content']['parts'][0]['text']
-    else:
-        return "خطأ في الاتصال"
+    except Exception as e:
+        return "💀 عذراً، لم أستطع الوصول للحل حالياً. تأكد من اتصالك."
 
-# ------------------ عرض الإجابة ------------------
-if question:
-    answer = ask_ai(pdf_text, question)
-    st.write("### الإجابة:")
-    st.write(answer)
-    st.markdown(f"""
-<style>
-.stApp {{
-    background: url("https://i.gifer.com/7VE.gif");
-    background-size: cover;
-}}
-</style>
-""", unsafe_allow_html=True)
-    .stApp::before {
-    content: "";
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.7);
-}
+# 5. واجهة البحث
+query = st.text_input("💀 اكتب سؤالك هنا للحصول على الحل الصافي:")
+
+if query:
+    with st.spinner("⏳ جاري نبش المنهج عن الحل..."):
+        context = get_curriculum()
+        full_prompt = f"منهج الدراسة: {context[:4000]}. أجب بوضوح على: {query}"
+        
+        solution = ask_gemini(full_prompt)
+        
+        st.markdown("<h2 style='color: #FF0000;'>✅ الحل النهائي:</h2>", unsafe_allow_html=True)
+        st.markdown(f"<div class='answer-box'>{solution}</div>", unsafe_allow_html=True)
+
+st.sidebar.image("https://i.pinimg.com/originals/4d/9d/21/4d9d21469e71b268f76332766860000e.gif")
