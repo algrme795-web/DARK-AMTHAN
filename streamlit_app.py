@@ -81,3 +81,75 @@ for(int i=1; i<=5; i++) {
 
 st.sidebar.markdown("---")
 st.sidebar.info("هذا الموقع يخدم طلاب معهد رسل الحضارة الدولي.")
+import streamlit as st
+
+# إعدادات الصفحة والتصميم
+st.set_page_config(page_title="الأسئلة الاسترشادية - خيري عبد الواحد", layout="wide")
+
+st.markdown("""
+    <style>
+    .main { background-color: #f0f2f6; }
+    .stExpander { background-color: #ffffff; border: 1px solid #d1d8e0; border-radius: 8px; }
+    .q-text { color: #2c3e50; font-weight: bold; font-size: 1.15em; margin-bottom: 10px; display: block; border-right: 5px solid #e67e22; padding-right: 10px; }
+    .a-text { color: #155724; background-color: #d4edda; padding: 12px; border-radius: 6px; margin-bottom: 25px; border: 1px solid #c3e6cb; }
+    .highlight { color: #d35400; font-weight: bold; }
+    div.stMarkdown { text-align: right; }
+    </style>
+    """, unsafe_allow_html=True)
+
+st.title("📝 الأسئلة الاسترشادية المحلولة")
+st.info("هذا القسم يحتوي على حلول كافة الأسئلة الاسترشادية لطلاب معهد رسل الحضارة الدولي.")
+
+# القائمة الجانبية
+with st.sidebar:
+    st.header("اختر المادة")
+    subject = st.radio("المواد المتاحة:", ["شبكات الحاسوب (CCNA-1)", "لغة البرمجة (++C)"])
+    st.write("---")
+    st.write("إعداد وتطوير: **خيري عبد الواحد**")
+
+if subject == "شبكات الحاسوب (CCNA-1)":
+    st.header("🌐 الأسئلة الاسترشادية لمادة الشبكات")
+
+    with st.expander("📌 الجزء الأول: المفاهيم والأنواع", expanded=True):
+        st.markdown('<span class="q-text">س: ما هي فوائد شبكات الحاسب؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: 1. مشاركة الموارد (طابعات، ملفات). 2. تقليل التكلفة. 3. سرعة نقل المعلومات. 4. المركزية في الإدارة.</div>', unsafe_allow_html=True)
+
+        st.markdown('<span class="q-text">س: ما هو الفرق الجوهري بين Client-Server و Peer-to-Peer؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: في Client-Server يوجد جهاز مركزي (خادم) يدير الموارد، أما في Peer-to-Peer فكل الأجهزة متساوية في الصلاحيات.</div>', unsafe_allow_html=True)
+
+    with st.expander("📌 الجزء الثاني: الأجهزة والربط (Topologies)"):
+        st.markdown('<span class="q-text">س: اذكر عيوب الـ Bus Topology.</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: إذا انقطع الكيبل الرئيسي تتوقف الشبكة بالكامل، وصعوبة اكتشاف الأعطال[cite: 1].</div>', unsafe_allow_html=True)
+
+        st.markdown('<span class="q-text">س: ما هو الجهاز المستخدم لربط شبكات مختلفة (مثل LAN بـ Internet)؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: الموجه (Router)[cite: 1].</div>', unsafe_allow_html=True)
+
+    with st.expander("📌 الجزء الثالث: نموذج OSI والعنونة"):
+        st.markdown('<span class="q-text">س: في أي طبقة يتم تحويل البيانات إلى إشارات كهربائية أو ضوئية؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: الطبقة الأولى (Physical Layer)[cite: 1].</div>', unsafe_allow_html=True)
+
+        st.markdown('<span class="q-text">س: ما هو الـ MAC Address؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: هو العنوان الفيزيائي المحروق على كرت الشبكة ولا يتغير، ويتكون من 48 بت[cite: 1].</div>', unsafe_allow_html=True)
+
+else:
+    st.header("💻 الأسئلة الاسترشادية لمادة ++C")
+
+    with st.expander("📍 الجزء الأول: المدخلات والمخرجات", expanded=True):
+        st.markdown('<span class="q-text">س: ما هو الفرق بين endl و "\n"؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: كلاهما يستخدم للنزول لسطر جديد، لكن endl تقوم أيضاً بتفريغ الذاكرة المؤقتة (Buffer).</div>', unsafe_allow_html=True)
+
+    with st.expander("📍 الجزء الثاني: الشروط والتكرار"):
+        st.markdown('<span class="q-text">س: اكتب كود بلغة ++C يطلب من المستخدم إدخال عمره ويطبع "Adult" إذا كان أكبر من 18.</span>', unsafe_allow_html=True)
+        st.code("""
+int age;
+cout << "Enter your age: ";
+cin >> age;
+if (age > 18) {
+    cout << "Adult";
+}
+        """, language="cpp")
+
+        st.markdown('<span class="q-text">س: ما هي وظيفة أمر switch؟</span>', unsafe_allow_html=True)
+        st.markdown('<div class="a-text">ج: تستخدم للاختيار بين عدة حالات ثابتة (Cases) بدلاً من استخدام if المتعددة لتسهيل الكود.</div>', unsafe_allow_html=True)
+
+st.sidebar.warning("تأكد من مراجعة هذه الأسئلة جيداً قبل الامتحان.")
